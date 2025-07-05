@@ -1,0 +1,419 @@
+---
+title: "Data Viz with R"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+# Set chunk options to display R code in the output (echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE)
+
+# Define a list of required packages
+packages <- c("tidyverse", "viridis", "formatR", "dplyr", "tinytex")
+
+# Ensure TinyTeX is installed (only needed if it's not installed)
+#tinytex::install_tinytex()
+
+# Loop through each package in the list and check if it's installed
+for (pkg in packages) {
+  
+  # If the package is not already installed, install it
+  if (!requireNamespace(pkg, quietly = TRUE)) {
+    install.packages(pkg)
+  }
+}
+
+```
+
+#### R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When we click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. we can embed an R code chunks.
+
+#### If we are new to R, here is a CHEAT SHEET for RStudio: https://raw.githubusercontent.com/rstudio/cheatsheets/main/rstudio-ide.pdf
+
+```{r, echo=TRUE, results='hide', message=FALSE}
+# Load all libraries needed
+library(tidyverse)
+library(viridis)
+library(tinytex)
+```
+
+
+
+# Module 1: Data visualization with Base R
+There are various packages to build creative visualization in R. Before we dig into a few popular packages, lets start with creating basic plots using base R without any further packages.
+
+For that, let's first create a dataset:
+```{r}
+grade <- c("A","B","C","A","D","B","B","A","A","C","D","C","C","A","B","A","C","B","A","A","A")
+score <- c(95, 85, 75, 95, 65, 85, 85, 100, 98, 76, 74, 75, 75, 95, 85, 95, 77, 89, 95, 95, 95)
+```
+## 1.1 Univariate visualization
+### 1.1.1 Create Histograms and Boxplots for Numeric Variables
+Here, notice 'grade' is a categorical variable and 'score' is a numeric variable. In base R, we need different types of codes to plot these variables. For the numeric variable 'score', we can create a histogram to see the frequency distribution. A boxplot is also a greay way to see the median and quantiles of the numeric variable.
+
+```{r}
+hist (score)
+hist(score, breaks=5, col="lightpink", border="black", main="Histogram of Student Scores", xlab="Score", ylab="Frequency")
+
+grid(col="gray")
+
+```
+
+We can also create a boxplots for numeric variables.
+
+```{r}
+boxplot(score)
+
+boxplot(score, main="Boxplot of Student Scores", ylab="Score", col="lightblue", border="black")
+
+grid(nx = NA, ny = NULL, col = "gray")
+
+```
+
+### 1.1.2 Create Barplots for Categorical Variables
+To plot the categorical variable 'grade' using base R, we want a bar plot. The barplot() function can be used for this purpose.
+
+Here's how we can create a bar plot for the grade data using base R.
+First create a table of grades to get frequency counts. Then use barplot code to plot the table. we can customize wer barplot as we like. See the example code set below.
+
+```{r}
+grade_table <- table(grade)
+```
+
+Then we can plot the variable grade_table
+```{r}
+
+barplot(grade_table, col="lightblue", border="black", main="Bar Plot of Student Grades", xlab="Grade", ylab="Frequency", ylim=c(0, max(grade_table) + 1))
+
+grid(nx = NA, ny = NULL, col = "gray") 
+```
+
+
+## 1.2 Bivariate Visualization
+In this section we will plot two variables in one plot.
+
+Let's first create a data frame by generating two new variables using runif code. The runif() function generates random numbers uniformly distributed between specified lower and upper limits. When using runif, we can use set.seed code to always get the same set of numbers for reproducibility. However, that is not necessary.
+Here's how we can use runif() to create two variables, let's say variable1 and variable2, with 100 random numbers each:
+
+```{r}
+set.seed(123) 
+
+variable1 <- runif(100, min = 0, max = 100)
+variable2 <- runif(100, min = 0, max = 100)
+new_dat<- data.frame(variable1, variable2)
+
+```
+
+In base R, plot is a common code to visualize two numeric variables.
+
+```{r}
+plot(new_dat$variable1, new_dat$variable2) 
+```
+
+This is the base command for a plot. To explore our data, this is an easy way to quickly check for trends. However, only using this base structure of the plot code may not provide an output that is clean and nicely formatted. If we want to report the plot output, we may want to customize by adding further details to the base code. Let's try here:
+
+```{r}
+plot(variable1, variable2, 
+     main="Scatter Plot of variable1 vs variable2", #title of the plot
+     xlab="variable1", #label for x axis
+     ylab="variable2", #label for y axis
+     ylim=c(0,100), xlim=c(0,100), #set limit for x and y axis
+     col="green", pch=19) #setting color and 'pch' fills the plot symbols for better visibility.
+```
+
+# Module 2: Data Visualization with Tidyverse
+
+The 'tidyverse' is a collection of R packages designed for data science. Spearheaded by Hadley Wickham, it provides tools to facilitate data import, wrangling, visualization, and modeling. Core packages include ggplot2, dplyr, tidyr, and readr, promoting a "tidy data" philosophy where each variable is a column, each observation is a row, and each value is a cell.
+
+#### Loading a dataset
+Let load this data on social media usage. I found this dataset publicly available at Kaggle and further cleaned the file for the purpose of today's lesson. Here is the link if you want to know more: https://www.kaggle.com/datasets/souvikahmed071/social-media-and-mental-health
+
+```{r}
+# Load the dataset
+df <- read.csv("social_media_use.csv")
+
+```
+We need to do basic data exploration to see if there are missing values, check mean, min, max to see if there are outliers to be taken off.
+
+```{r, include=FALSE}
+head(df)
+summary(df)
+# check missing values
+sum(is.na(df$anxiety_level))
+sum(is.na(df$distraction_level))
+sum(is.na(df$depression_level))
+sum(is.na(df$insomnia_level))
+```
+## 2.1 Univariate Visualization
+Let us with check the overall distribution of social media usage per day. 'usage_perday' variable indicates usage of social media perday. We will use the 'ggplot2' package.
+
+### Introducing: ggplot2 package
+At its core, ggplot2 uses a layered approach to constructing plots, where you start with a base plot and then add layers to it.
+
+Here's a breakdown of the basic ggplot command without any customization:
+
+Data: The data that you want to plot. In our case, it 'df.'
+Aesthetic Mappings (aes): This defines how variables in your data are mapped to visual properties.
+Here's the basic structure:
+
+```{r}
+ggplot(data = df, aes(x = usage_perday)) 
+
+```
+
+Here, we're specifying that the data comes from the dataframe 'df' and that we want to use the usage_perday column on the x-axis.
+
+However, if we just run the code above, we'll get an empty plot. That's because we've defined the data and how it should be mapped visually, but we haven't told ggplot what type of visualization to create such as a barplot, line graph, scatterpott etc.
+
+Geometries (geom functions): This is where we specify the type of visualization. For our data, a bar plot would be appropriate since usage_perday is a categorical variable.
+
+```{r}
+ggplot(data = df, aes(x = usage_perday)) +
+  geom_bar()
+```
+
+Just like above, using just the basic code structure of ggplot, we might not get the result we want. For that, we need to provide more details in this line of code. 'ggplot' function uses '+' sign to add more functions to add detail into a plot. Checkout the documentation for ggplot function in your console writing help ("ggplot").
+
+In the following code chunks, we'll add a few more details and check if we get a better output.
+
+```{r}
+
+df %>%
+  ggplot(aes(x = usage_perday)) +
+  geom_bar(aes(fill = usage_perday), position="dodge") +
+  labs(title = "Distribution of Daily Social Media Usage", x = "Usage per Day", y = "Count") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_fill_viridis_d()  # Use viridis palette
+```
+
+Notice that there is no order of social media usage per day, thus the plot does not make sense here. 
+To order the bars from low to high, we need to convert the usage_perday variable from a regular character or factor variable to an ordered factor. By doing this, we can specify the desired order of the levels, and ggplot2 will respect this order when plotting.
+
+Here's how we can adjust the code to order the bars from "Less than 1 hour" to "Between 4 and 5 hours":
+
+```{r}
+# Convert usage_perday to an ordered factor
+df$usage_perday <- factor(df$usage_perday, 
+                            levels = c("Less than an Hour", 
+                                       "Between 1 and 2 hours", 
+                                       "Between 2 and 3 hours", 
+                                       "Between 3 and 4 hours", 
+                                       "Between 4 and 5 hours", 
+                                       "More than 5 hours"),
+                            ordered = TRUE)
+
+```
+
+And then plot the same thing:
+
+```{r}
+# Plot
+df %>%
+  ggplot(aes(x = usage_perday)) +
+  geom_bar(aes(fill = usage_perday), position="dodge") +
+  labs(title = "Distribution of Daily Social Media Usage", x = "Usage per Day", y = "Count") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        legend.position = "none") +  # Remove the legend
+  scale_fill_viridis_d()  # Use viridis palette
+```
+
+This makes a bit more sense. However, notice how the order of the color palette is somewhat counter intuitive.
+
+To match the order of color palette and the order of categories, we can use the 'direction' argument in the scale_fill_viridis_d() function. Setting direction = -1 will reverse the color palette. Let's make that adjustment:
+
+```{r}
+# Filter out rows where usage_perday is NA and then create the plot
+df %>%
+  ggplot(aes(x = usage_perday)) +
+  geom_bar(aes(fill = usage_perday), position="dodge") +
+  labs(title = "Distribution of Daily Social Media Usage", x = "Usage per Day", y = "Count") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        legend.position = "none") +  # Remove the legend
+  scale_fill_viridis_d(direction = -1)  # Reverse the viridis palette
+```
+
+How about we make it vertical?
+
+```{r}
+# Filter out rows where usage_perday is NA and then create a horizontal bar plot
+df %>%
+  ggplot(aes(x = usage_perday)) +  # Set usage_perday as the x aesthetic
+  geom_bar(aes(fill = usage_perday), position="dodge") +
+  labs(title = "Distribution of Daily Social Media Usage", y = "Count", x = "Usage per Day") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 0, hjust = 0.5),  # Reset the x-axis text angle
+        legend.position = "none") +  # Remove the legend
+  scale_fill_viridis_d(direction = -1) +  # Reverse the viridis palette
+  coord_flip()  # Flip the coordinates to make the bar plot horizontal
+
+```
+
+### **Group work**
+**Take 10 mins to work in groups on creating one univariate plot using ggplot2 library. Select one variable that interests from the data and create a barplot.**
+#### Step 1: Explore the Dataset (1-2 mins)
+Load the social_media_usage.csv dataset.
+```{r}
+
+```
+
+####Step 2: Create the plot
+
+a. Select a variable: Discuss within your group and select one variable from the dataset that you find interesting.
+Consider the type of the selected variable (e.g., numeric, categorical).
+
+b. Choose the Type of Plot
+Depending on the type of the chosen variable, decide on the most appropriate type of plot. For this activity, we'll focus on creating a bar plot.
+If the variable is categorical, a bar plot is straightforward. If the variable is numeric, consider creating bins or categories.
+
+c. Create the Plot
+Use the ggplot2 library to create a bar plot for the selected variable.
+Use the head() function to view the first few rows of the dataset. This will give you a sense of the available variables.
+
+```{r}
+library(ggplot2)
+#rest of the code
+```
+
+####Step 3: Discuss the Plot
+Once each group has created their plot, take a moment to discuss within your group:
+Features of the plot that you like.
+Elements of the plot you'd like to change or improve.
+Interpretation of the data based on the plot.
+
+
+## 2.2 Bivariate Visualization
+
+In the following plot, each bar represents an anxiety_level category, and the segments within each bar represent the distribution of usage_perday for that anxiety level. This offers a clear visual representation of how daily social media usage varies across different anxiety levels.
+
+```{r}
+ggplot(df, aes(x = anxiety_level, fill = usage_perday)) +
+  geom_bar(position = "stack") +
+  labs(
+    title = "Distribution of Daily Social Media Usage by Anxiety Level",
+    x = "Anxiety Level",
+    y = "Count"
+  ) +
+  theme_minimal()+
+  scale_fill_viridis_d(direction = -1)
+```
+
+Let's try a line graph by aggregating the data by mean anxiety_level for each usage_perday category. We can check if any strong trend lies for these two variables. This would help us to check a trend. Caution: It will not tell us if there is any statistically significant relationship is these for these two variables. For that we would need to conduct further statistical analysis.
+
+```{r}
+
+library(ggplot2)
+
+# Convert variables to factors
+df$anxiety_level <- as.numeric(as.character(df$anxiety_level))
+df$usage_perday <- factor(df$usage_perday, levels = c("Less than an Hour", "Between 1 and 2 hours", "Between 2 and 3 hours", "Between 3 and 4 hours", "Between 4 and 5 hours", "More than 5 hours"))
+
+# Aggregate data by mean anxiety_level for each usage_perday category
+agg_data <- df %>% 
+  group_by(usage_perday) %>% 
+  summarise(mean_anxiety = mean(anxiety_level, na.rm = TRUE))
+
+# Create line graph
+ggplot(agg_data, aes(x = usage_perday, y = mean_anxiety)) +
+  geom_line(group = 1) +
+  labs(title = "Trend of Anxiety Level by Usage per Day", 
+       x = "Usage per Day", 
+       y = "Mean Anxiety Level") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+  plot.title = element_text(hjust = 0.5) 
+   )
+```
+
+##Inferential statistics visualization
+
+```{r}
+mapping <- c(
+  "Less than an Hour"     = 0.5,
+  "Between 1 and 2 hours" = 1.5,
+  "Between 2 and 3 hours" = 2.5,
+  "Between 3 and 4 hours" = 3.5,
+  "Between 4 and 5 hours" = 4.5,
+  "More than 5 hours"     = 6   # You can adjust this value as needed
+)
+
+# Recode the factor levels to numeric values
+df$usage_perday_numeric <- mapping[as.character(df$usage_perday)]
+```
+
+```{r}
+# Pearson's correlation
+pearson_anxiety <- cor(df$usage_perday_numeric, df$anxiety_level, method = "pearson", use = "complete.obs")
+pearson_distraction <- cor(df$usage_perday_numeric, df$distraction_level, method = "pearson", use = "complete.obs")
+pearson_depression <- cor(df$usage_perday_numeric, df$depression_level, method = "pearson", use = "complete.obs")
+pearson_insomnia <- cor(df$usage_perday_numeric, df$insomnia_level, method = "pearson", use = "complete.obs")
+```
+
+
+```{r}
+# Pearson's correlation tests
+test_pearson_anxiety <- cor.test(df$usage_perday_numeric, df$anxiety_level, method = "pearson")
+test_pearson_distraction <- cor.test(df$usage_perday_numeric, df$distraction_level, method = "pearson")
+test_pearson_depression <- cor.test(df$usage_perday_numeric, df$depression_level, method = "pearson")
+test_pearson_insomnia <- cor.test(df$usage_perday_numeric, df$insomnia_level, method = "pearson")
+
+```
+
+
+```{r}
+# Compile results
+correlation_results <- data.frame(
+  Variable = c("Anxiety Level", "Distraction Level", "Depression Level", "Insomnia Level"),
+  Pearson_Correlation = c(
+    pearson_anxiety,
+    pearson_distraction,
+    pearson_depression,
+    pearson_insomnia
+  ),
+  Pearson_p_value = c(
+    test_pearson_anxiety$p.value,
+    test_pearson_distraction$p.value,
+    test_pearson_depression$p.value,
+    test_pearson_insomnia$p.value
+  )
+)
+
+print(correlation_results)
+
+```
+
+```{r}
+library(ggplot2)
+
+# Anxiety Level vs. Usage Per Day
+# First, create a new variable to categorize p-values
+correlation_results$Significance <- ifelse(correlation_results$Pearson_p_value <= 0.000, "Significant", "Not Significant")
+
+# Now, create the plot
+library(ggplot2)
+
+ggplot(correlation_results, aes(x = Variable, y = Pearson_Correlation, color = Significance)) +
+  geom_point(size = 5) +  # Increase point size
+  ylim(0, 0.8) +  # Set y-axis limits from 0 to 0.8
+  labs(
+    title = "Trends of psychological impacts with use of social media are not significant",
+    x = "Psychological Variables",
+    y = "Pearson Correlation Coefficient"
+  ) +
+  scale_color_manual(values = c("Significant" = "green", "Not Significant" = "yellow")) +  # Set point colors
+  theme_classic()  # Remove grey background
+
+
+# Repeat for other variables
+
+```
+
+Feel free to play with other datasets of your choice and see if you find any interesting trends!
+
+Thank you!
+
