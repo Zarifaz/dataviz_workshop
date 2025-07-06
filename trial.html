@@ -18,6 +18,69 @@
             background-color: #f8f9fa;
         }
         
+        /* Top Navigation */
+        .top-nav {
+            background: #2d3748;
+            padding: 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0 20px;
+        }
+        
+        .nav-menu {
+            list-style: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .nav-menu li {
+            margin: 0;
+        }
+        
+        .nav-link {
+            display: block;
+            padding: 18px 30px;
+            color: #cbd5e0;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .nav-link:hover {
+            background-color: #4a5568;
+            color: #ffffff;
+        }
+        
+        .nav-link.active {
+            background-color: #667eea;
+            color: #ffffff;
+            border-bottom-color: #5a67d8;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-menu {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .nav-link {
+                text-align: center;
+                padding: 15px 20px;
+            }
+        }
+        
         .container {
             max-width: 1000px;
             margin: 0 auto;
@@ -241,6 +304,16 @@
     </style>
 </head>
 <body>
+    <!-- Top Navigation -->
+    <nav class="top-nav">
+        <div class="nav-container">
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link active">Overview & R/Python Tools</a></li>
+                <li><a href="ethics.html" class="nav-link">Ethics in Data Visualization</a></li>
+            </ul>
+        </div>
+    </nav>
+
     <div class="container">
         <header>
             <h1>Teaching Data Visualization with Python & R</h1>
@@ -264,43 +337,113 @@
         </div>
         
         <div class="presentation-section">
-            <h2>📊 Presentation Materials</h2>
-            <p>Access the full presentation slides and speaker notes:</p>
-            <div style="margin: 20px 0;">
-                <a href="https://zarifaz.github.io/dataviz-workshop/slides" class="button">View Presentation Slides</a>
-            </div>
+            <h2>🛠️ Quick Setup Instructions</h2>
+            <p>Get your students started immediately with these web-based platforms - no installation required!</p>
             
             <div class="slides-preview">
                 <div class="slide-card">
-                    <h4>🌐 Platform Overview</h4>
+                    <h4>🐍 Python Setup (Google Colab)</h4>
                     <ul>
-                        <li>Google Colab features</li>
-                        <li>Posit Cloud benefits</li>
-                        <li>Jupyter options</li>
+                        <li>Click "Open in Google Colab" button</li>
+                        <li>Sign in with Google account</li>
+                        <li>Click "Copy to Drive" to save</li>
+                        <li>Run cells with Shift+Enter</li>
                     </ul>
                 </div>
                 <div class="slide-card">
-                    <h4>🐍 Python Examples</h4>
+                    <h4>📊 R Setup (Posit Cloud)</h4>
                     <ul>
-                        <li>pandas & matplotlib</li>
-                        <li>seaborn visualizations</li>
-                        <li>Data ordering techniques</li>
+                        <li>Create free Posit Cloud account</li>
+                        <li>Click "Open in Posit Cloud"</li>
+                        <li>Project copies to workspace</li>
+                        <li>Click "Knit" to run document</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="presentation-section">
+            <h2>🔍 Python vs R: Side-by-Side Overview</h2>
+            <p>Both languages are excellent for data visualization. Here's what your students need to know:</p>
+            
+            <div class="slides-preview">
+                <div class="slide-card">
+                    <h4>🐍 Python Basics</h4>
+                    <ul>
+                        <li><strong>Libraries:</strong> pandas (data), matplotlib (plots)</li>
+                        <li><strong>Strength:</strong> General programming + data science</li>
+                        <li><strong>Learning curve:</strong> Gentle for beginners</li>
+                        <li><strong>Example:</strong> df.plot(kind='bar')</li>
                     </ul>
                 </div>
                 <div class="slide-card">
-                    <h4>📈 R Examples</h4>
+                    <h4>📊 R Basics</h4>
                     <ul>
-                        <li>tidyverse & ggplot2</li>
-                        <li>Grammar of graphics</li>
-                        <li>Customization options</li>
+                        <li><strong>Libraries:</strong> ggplot2 (grammar of graphics)</li>
+                        <li><strong>Strength:</strong> Built specifically for statistics</li>
+                        <li><strong>Learning curve:</strong> Steeper but powerful</li>
+                        <li><strong>Example:</strong> ggplot(data, aes(x, y)) + geom_bar()</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="presentation-section">
+            <h2>🎓 Tips for Introducing to Students</h2>
+            
+            <div class="slides-preview">
+                <div class="slide-card">
+                    <h4>✨ Start with the "Wow" Factor</h4>
+                    <ul>
+                        <li>Show impressive visualizations first</li>
+                        <li>Use data they care about (social media, sports, gaming)</li>
+                        <li>Create something beautiful in 5 minutes</li>
+                        <li>Emphasize: "You can build this!"</li>
                     </ul>
                 </div>
                 <div class="slide-card">
-                    <h4>⚖️ Ethics Topics</h4>
+                    <h4>🧱 Build Gradually</h4>
                     <ul>
-                        <li>Truncated axes</li>
-                        <li>Dual axis manipulation</li>
-                        <li>Teaching integrity</li>
+                        <li>Start with simple bar charts</li>
+                        <li>Add one element at a time (colors, labels)</li>
+                        <li>Show before/after comparisons</li>
+                        <li>Celebrate small wins</li>
+                    </ul>
+                </div>
+                <div class="slide-card">
+                    <h4>🧘 Avoid Coding Overwhelm</h4>
+                    <ul>
+                        <li>Provide pre-written code templates</li>
+                        <li>Focus on changing values, not writing from scratch</li>
+                        <li>Use copy-paste first, explain later</li>
+                        <li>Emphasize: "It's okay not to understand everything"</li>
+                    </ul>
+                </div>
+                <div class="slide-card">
+                    <h4>🤝 Make it Collaborative</h4>
+                    <ul>
+                        <li>Pair programming/coding</li>
+                        <li>Share screens and walk through together</li>
+                        <li>Let students teach each other</li>
+                        <li>Create class data visualization gallery</li>
+                    </ul>
+                </div>
+                <div class="slide-card">
+                    <h4>🔗 Connect to Real World</h4>
+                    <ul>
+                        <li>Use current events and trending topics</li>
+                        <li>Show how journalists use these tools</li>
+                        <li>Discuss career connections</li>
+                        <li>Emphasize critical thinking skills</li>
+                    </ul>
+                </div>
+                <div class="slide-card">
+                    <h4>🎯 Keep it Simple</h4>
+                    <ul>
+                        <li>Start with 3-4 lines of code maximum</li>
+                        <li>Hide complex setup in pre-written cells</li>
+                        <li>Focus on the data story, not the code</li>
+                        <li>Let curiosity drive deeper learning</li>
                     </ul>
                 </div>
             </div>
@@ -330,7 +473,7 @@
             <div class="resource-card">
                 <h3><span class="icon">📁</span> Dataset</h3>
                 <p>Social media usage dataset used in all examples. Pre-cleaned and ready for exploration.</p>
-                <a href="social_media_use.csv" class="button button-secondary">Download Dataset</a>
+                <a href="https://drive.google.com/file/d/1ZuzIZb-PusvLc2sZLDeIEZ59xhVQ3QC5/view?usp=drive_link" class="button button-secondary" target="_blank">Download Dataset</a>
                 <div style="margin-top: 10px;">
                     <a href="https://drive.google.com/file/d/1ZuzIZb-PusvLc2sZLDeIEZ59xhVQ3QC5/view?usp=drive_link" style="color: #667eea; text-decoration: none;">📖 View Data Dictionary</a>
                 </div>
@@ -356,25 +499,7 @@
             <a href="#contact">💬 Contact</a>
         </div>
         
-        <div id="setup" style="background: white; padding: 30px; border-radius: 10px; margin: 40px 0;">
-            <h2 style="color: #667eea;">🛠️ Quick Setup Instructions</h2>
-            
-            <h3 style="margin-top: 20px;">For Python (Google Colab):</h3>
-            <ol style="margin-left: 20px;">
-                <li>Click the "Open in Google Colab" button above</li>
-                <li>Sign in with a Google account</li>
-                <li>Click "Copy to Drive" to save your own version</li>
-                <li>Run cells with Shift+Enter</li>
-            </ol>
-            
-            <h3 style="margin-top: 20px;">For R (Posit Cloud):</h3>
-            <ol style="margin-left: 20px;">
-                <li>Create a free Posit Cloud account</li>
-                <li>Click "Open in Posit Cloud" above</li>
-                <li>The project will copy to your workspace</li>
-                <li>Click "Knit" to run the document</li>
-            </ol>
-        </div>
+
         
         <footer>
             <p>Created for educators, by educators | 
