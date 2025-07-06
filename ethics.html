@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ethics in Data Visualization - Teaching Resources</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+        
+        /* Top Navigation */
+        .top-nav {
+            background: #2d3748;
+            padding: 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0 20px;
+        }
+        
+        .nav-menu {
+            list-style: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .nav-menu li {
+            margin: 0;
+        }
+        
+        .nav-link {
+            display: block;
+            padding: 18px 30px;
+            color: #cbd5e0;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .nav-link:hover {
+            background-color: #4a5568;
+            color: #ffffff;
+        }
+        
+        .nav-link.active {
+            background-color: #667eea;
+            color: #ffffff;
+            border-bottom-color: #5a67d8;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-menu {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .nav-link {
+                text-align: center;
+                padding: 15px 20px;
+            }
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+            margin-bottom: 40px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .section {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 40px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+        
+        .section h3 {
+            color: #4a5568;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+        
+        .examples {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+        
+        .example-card {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 25px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .example-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        
+        .example-card h4 {
+            color: #667eea;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .example-card .icon {
+            font-size: 1.5em;
+        }
+        
+        .example-card p {
+            color: #666;
+            margin-bottom: 15px;
+        }
+        
+        .example-card ul {
+            margin-left: 20px;
+            color: #666;
+        }
+        
+        .quote-box {
+            background: #f7fafc;
+            border-left: 5px solid #667eea;
+            padding: 20px;
+            margin: 30px 0;
+            font-style: italic;
+            font-size: 1.1em;
+        }
+        
+        .quote-box .author {
+            font-weight: bold;
+            margin-top: 10px;
+            font-style: normal;
+            color: #4a5568;
+        }
+        
+        .teaching-tips {
+            background: #f0fff4;
+            border: 2px solid #9ae6b4;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 30px 0;
+        }
+        
+        .teaching-tips h3 {
+            color: #38a169;
+            margin-bottom: 15px;
+        }
+        
+        .teaching-tips ul {
+            margin-left: 20px;
+        }
+        
+        .teaching-tips li {
+            margin-bottom: 10px;
+            color: #2d3748;
+        }
+        
+        .resources-section {
+            background: #edf2f7;
+            border-radius: 10px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+        
+        .resources-section h3 {
+            color: #4a5568;
+            margin-bottom: 20px;
+        }
+        
+        .resource-link {
+            display: inline-block;
+            margin: 5px 10px 5px 0;
+            padding: 8px 16px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        
+        .resource-link:hover {
+            background: #5a67d8;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            color: #666;
+        }
+        
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2em;
+            }
+            
+            .examples {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navigation -->
+    <nav class="top-nav">
+        <div class="nav-container">
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Overview & R/Python Tools</a></li>
+                <li><a href="ethics.html" class="nav-link active">Ethics in Data Visualization</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header>
+            <h1>Ethics in Data Visualization</h1>
+            <p>Teaching integrity and responsibility in data storytelling</p>
+        </header>
+        
+        <div class="section">
+            <h2>⚠️ Why Ethics Matter in Data Visualization</h2>
+            <p>Data visualizations are powerful tools that can inform, persuade, and influence decision-making. With this power comes responsibility. Teaching students to create ethical visualizations is just as important as teaching them the technical skills.</p>
+            
+            <div class="quote-box">
+                "Ethical thinking is about not only intentions, but consequences."
+                <div class="author">- Alberto Cairo</div>
+            </div>
+            
+            <p>Ethical data visualization is about:</p>
+            <ul style="margin-left: 20px; margin-top: 15px;">
+                <li><strong>Honesty:</strong> Representing data accurately without distortion</li>
+                <li><strong>Transparency:</strong> Being clear about data sources and limitations</li>
+                <li><strong>Accessibility:</strong> Making visualizations understandable to diverse audiences</li>
+                <li><strong>Responsibility:</strong> Considering the impact of your visualization choices</li>
+            </ul>
+        </div>
+        
+        <div class="section">
+            <h2>✅ Teaching Students to Be Critical Viewers</h2>
+            
+            <h3>Questions to Ask About Any Visualization:</h3>
+            <ul style="margin-left: 20px;">
+                <li><strong>Source Check:</strong> Who created this? What's their motivation?</li>
+                <li><strong>Scale Investigation:</strong> Does the y-axis start at zero? Are scales consistent?</li>
+                <li><strong>Context Questions:</strong> What time period is shown? What's missing?</li>
+                <li><strong>Correlation vs. Causation:</strong> Just because two lines match doesn't mean they're related!</li>
+                <li><strong>Sample Size:</strong> How much data is this based on?</li>
+            </ul>
+            
+            <h3>Classroom Activities:</h3>
+            <ul style="margin-left: 20px;">
+                <li><strong>"Fix the Chart":</strong> Give students a misleading chart to redesign ethically</li>
+                <li><strong>"Spot the Problem":</strong> Show examples and have students identify issues</li>
+                <li><strong>"Same Data, Different Stories":</strong> Create multiple charts from one dataset</li>
+                <li><strong>"News Analysis":</strong> Find charts in current news and critique them together</li>
+            </ul>
+        </div>
+        
+        <div class="section">
+            <h2>🎯 Real Examples from the Wild</h2>
+            <p>Here are actual examples of how visualizations can mislead - perfect for teaching students to be critical consumers of data.</p>
+            
+            <h3>Example 1: Truncated Y-Axis Makes Small Changes Look Huge</h3>
+            <div style="text-align: center; margin: 20px 0;">
+                <img src="Same Data, Different Y-Axis.png" alt="Same data with different y-axis scales showing dramatic vs realistic view" style="width: 100%; max-width: 800px; border-radius: 8px; border: 2px solid #e9ecef;">
+                <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-top: 10px;">
+                    <p>Left: Y-axis starts at 3.140% - makes tiny changes look dramatic! Right: Y-axis starts at 0% - shows changes are actually very small</p>
+                </div>
+            </div>
+            
+            <h3>Example 2: Cumulative vs. Annual Data</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0;">
+                <div style="text-align: center;">
+                    <h4>Cumulative Revenue</h4>
+                    <img src="Cumulative Annual Revenue.png" alt="Cumulative annual revenue chart showing steady growth" style="width: 100%; max-width: 400px; border-radius: 8px; border: 2px solid #e9ecef;">
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-top: 10px;">
+                        <p>Always goes up - looks like continuous growth!</p>
+                    </div>
+                </div>
+                <div style="text-align: center;">
+                    <h4>Annual Revenue</h4>
+                    <img src="Annual Revenue.png" alt="Annual revenue chart showing peak and decline" style="width: 100%; max-width: 400px; border-radius: 8px; border: 2px solid #ffeaa7;">
+                    <div style="background: #fff3cd; padding: 15px; border-radius: 8px; margin-top: 10px;">
+                        <p>Shows the real story - peak in 2005, then decline</p>
+                    </div>
+                </div>
+            </div>
+            
+            <h3>Example 3: False Correlations with Dual Axes</h3>
+            <div style="text-align: center; margin: 20px 0;">
+                <img src="Letters in Winning Word of Scripps National Spelling Bee.png" alt="Spelling bee winners correlated with spider deaths" style="width: 100%; max-width: 800px; border-radius: 8px; border: 2px solid #e9ecef;">
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-top: 10px;">
+                    <h4>🕷️ Spelling Bee Winners vs. Spider Deaths</h4>
+                    <p>By manipulating two different y-axes, you can make completely unrelated data appear correlated with a <strong>correlation coefficient</strong> - but it's pure coincidence!</p>
+                </div>
+            </div>
+            
+            <h3>Example 4: Flipping Conventions</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0;">
+                <div style="text-align: center;">
+                    <h4>🔄 Misleading Chart</h4>
+                    <img src="Gun deaths in Florida.png" alt="Florida gun deaths chart with flipped y-axis" style="width: 100%; max-width: 400px; border-radius: 8px; border: 2px solid #fed7d7;">
+                </div>
+                <div style="text-align: center;">
+                    <h4>🔄 Fixed Version</h4>
+                    <img src="Gun deaths in Florida - Fixed.png" alt="Florida gun deaths chart with correct orientation" style="width: 100%; max-width: 400px; border-radius: 8px; border: 2px solid #9ae6b4;">
+                </div>
+            </div>
+            <div style="background: #fff3cd; padding: 20px; border-radius: 8px; margin-top: 10px;">
+                <p>The first chart flipped the y-axis so "down" visually represents "up" in the data - violating the basic convention that "up" means "more". The corrected version shows the data properly oriented.</p>
+            </div>
+            
+            <h3>Example 5: Pie Chart Math Doesn't Add Up</h3>
+            <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                <h4>📺 Fox News 2012 Election Pie Chart</h4>
+                <p>Sometimes the numbers literally don't add up:</p>
+                <ul style="margin-left: 20px;">
+                    <li>Romney: 70%, Huckabee: 63%, Palin: 60%</li>
+                    <li>Total: 193% (should be 100%!)</li>
+                    <li>Shows how 3D pie charts can distort perception</li>
+                    <li>Mathematical impossibility presented as fact</li>
+                </ul>
+                <p><em>Always check if the numbers make sense!</em></p>
+            </div>
+            
+            <div class="examples">
+                <div class="example-card">
+                    <h4><span class="icon">📊</span> Truncated Y-Axis</h4>
+                    <p>Starting the y-axis at a value other than zero can make small differences appear dramatic.</p>
+                    <ul>
+                        <li>Makes tiny changes look like massive differences</li>
+                        <li>Often used in financial charts to exaggerate performance</li>
+                        <li>Example: Interest rates from 3.140% to 3.152% can look like huge growth</li>
+                    </ul>
+                </div>
+                
+                <div class="example-card">
+                    <h4><span class="icon">📈</span> Dual Y-Axes Manipulation</h4>
+                    <p>Using two different scales can create false correlations between unrelated data.</p>
+                    <ul>
+                        <li>Makes unrelated trends appear connected</li>
+                        <li>Scales can be manipulated to show any desired relationship</li>
+                        <li>Example: Spelling bee winners vs. spider deaths - pure coincidence!</li>
+                    </ul>
+                </div>
+                
+                <div class="example-card">
+                    <h4><span class="icon">📉</span> Cumulative vs. Annual Data</h4>
+                    <p>Mixing cumulative and annual data can mislead about actual trends.</p>
+                    <ul>
+                        <li>Cumulative data always goes up, hiding real patterns</li>
+                        <li>Annual data shows the true ups and downs</li>
+                        <li>Example: iPhone sales look amazing when cumulative, concerning when annual</li>
+                    </ul>
+                </div>
+                
+                <div class="example-card">
+                    <h4><span class="icon">🎨</span> Misleading Colors & Design</h4>
+                    <p>Visual elements can bias interpretation before viewers even read the data.</p>
+                    <ul>
+                        <li>Red/green combinations exclude colorblind viewers</li>
+                        <li>3D effects distort proportions (pie charts)</li>
+                        <li>Inconsistent color coding confuses readers</li>
+                    </ul>
+                </div>
+                
+                <div class="example-card">
+                    <h4><span class="icon">🕒</span> Cherry-Picking Time Periods</h4>
+                    <p>Selecting convenient date ranges to support a predetermined narrative.</p>
+                    <ul>
+                        <li>Starting/ending at convenient points</li>
+                        <li>Ignoring important context (like economic recessions)</li>
+                        <li>Example: Florida gun deaths - showing data that supports your argument</li>
+                    </ul>
+                </div>
+                
+                <div class="example-card">
+                    <h4><span class="icon">🔄</span> Flipping Conventions</h4>
+                    <p>Deliberately violating expected visual conventions to confuse readers.</p>
+                    <ul>
+                        <li>Flipping y-axis so "down" means "up"</li>
+                        <li>Using unconventional chart orientations</li>
+                        <li>Violating color expectations (red for good, green for bad)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>✅ Teaching Students to Be Critical Viewers</h2>
+            
+            <h3>Questions to Ask About Any Visualization:</h3>
+            <ul style="margin-left: 20px;">
+                <li><strong>Source Check:</strong> Who created this? What's their motivation?</li>
+                <li><strong>Scale Investigation:</strong> Does the y-axis start at zero? Are scales consistent?</li>
+                <li><strong>Context Questions:</strong> What time period is shown? What's missing?</li>
+                <li><strong>Correlation vs. Causation:</strong> Just because two lines match doesn't mean they're related!</li>
+                <li><strong>Sample Size:</strong> How much data is this based on?</li>
+            </ul>
+            
+            <h3>Classroom Activities:</h3>
+            <ul style="margin-left: 20px;">
+                <li><strong>"Fix the Chart":</strong> Give students a misleading chart to redesign ethically</li>
+                <li><strong>"Spot the Problem":</strong> Show examples and have students identify issues</li>
+                <li><strong>"Same Data, Different Stories":</strong> Create multiple charts from one dataset</li>
+                <li><strong>"News Analysis":</strong> Find charts in current news and critique them together</li>
+            </ul>
+        </div>
+        
+        <div class="section">
+            <h2>🎓 Six Ways to Improve Data Visualizations</h2>
+            <p>Based on Alberto Cairo's recommendations:</p>
+            
+            <ol style="margin-left: 20px;">
+                <li><strong>Don't just look at visualizations - read them</strong><br>
+                Teach students to examine labels, sources, and methodology carefully</li>
+                
+                <li><strong>Always note the sources</strong><br>
+                Who collected this data? How recent is it? What might be their bias?</li>
+                
+                <li><strong>Don't read too much into visualizations</strong><br>
+                Correlation doesn't imply causation - just because trends look similar doesn't mean they're related</li>
+                
+                <li><strong>Make sure charts show appropriate amounts of data</strong><br>
+                Is there enough data to support the conclusion? Are sample sizes adequate?</li>
+                
+                <li><strong>Get comfortable with uncertainty</strong><br>
+                Real data has uncertainty - look for error bars and confidence intervals</li>
+                
+                <li><strong>Update ethical principles to change with the times</strong><br>
+                New technologies bring new ethical challenges in data visualization</li>
+            </ol>
+        </div>
