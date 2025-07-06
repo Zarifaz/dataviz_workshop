@@ -1,6 +1,6 @@
 ---
 title: Ethics in Data Visualization
-nav_order: 4
+nav_order: 2
 ---
 
 # ⚖️ Ethics in Data Visualization
